@@ -1,7 +1,13 @@
 .CategoryList {
+
+  .style-item {
+    margin-left: 1vw;
+    margin-right: 1vw;
+  }
+
   .item {
     border-radius: 15px;
-    width: 16vw;
+    width: 100%;
     height: 16vw;
     display: flex;
     align-items: center;
@@ -26,10 +32,25 @@
     }
   }
 
+  @media only screen and (max-width: 800px) {
+    .item {
+      border-radius: 5px;
+      width: 100%;
+      height: 20vh;
+      .img-item {
+        width: 87px;
+        height: 87px;
+        .title-item {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+
   @media only screen and (max-width: 575px) {
     .item {
       border-radius: 5px;
-      width: 125px;
+      width: 100%;
       height: 125px;
       .img-item {
         width: 87px;

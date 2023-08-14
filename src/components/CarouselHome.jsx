@@ -10,19 +10,19 @@ function CarouselHome() {
     superLargeDesktop: {
       // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 1024 },
-      items: 2.5,
+      items: 3,
     },
     desktop: {
       breakpoint: { max: 1024, min: 800 },
       items: 2.5,
     },
     tablet: {
-      breakpoint: { max: 800, min: 464 },
+      breakpoint: { max: 800, min: 575 },
       items: 2,
     },
     mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1.25,
+      breakpoint: { max: 575, min: 0 },
+      items: 1,
     },
   };
 
@@ -32,9 +32,9 @@ function CarouselHome() {
         <Carousel
           responsive={responsive}
           showDots={true}
-          autoPlay={true}
+          autoPlay={false}
           infinite={true}
-          centerMode={true}
+          centerMode={false}
           itemClass="style-item"
         >
           <div className="item">
