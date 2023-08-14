@@ -1,7 +1,8 @@
 .CarouselHome {
+
   .style-item {
-    margin-left: 3vh;
-    margin-right: 3vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
   }
 
   .item {
@@ -9,7 +10,7 @@
 
     .img-item {
       border-radius: 15px;
-      width: 25vw;
+      width: 100%;
       height: 25vh;
       background-size: cover;
       background-position: center;
@@ -25,12 +26,27 @@
     }
   }
 
+  /* Styles for screens with a maximum width of 800px (tablet) */
+  @media only screen and (max-width: 800px) {
+    .item {
+      .img-item {
+        border-radius: 5px;
+        width: 100%;
+        height: 200px;
+
+        .title-item {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+
   @media only screen and (max-width: 575px) {
     .item {
       .img-item {
         border-radius: 5px;
-        width: 200px;
-        height: 100px;
+        width: 100%;
+        height: 200px;
 
         .title-item {
           font-size: 1rem;

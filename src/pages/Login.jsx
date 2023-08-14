@@ -1,28 +1,88 @@
-import React from "react";
-import "../style/pages/Login.scss"
+import React, { useState, useEffect } from "react";
+import "../style/pages/Login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { addAuth } from '../reducers/auth';
+import { addAuth } from "../reducers/auth";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("customer");
 
   const state = useSelector((reducer) => reducer.auth);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem("auth") === "true" || state.auth) {
       navigate("/");
     }
   }, []);
 
   const handleLogin = () => {
-    // show loading before axios finish
+    const validations = [
+      {
+        field: email,
+        label: "Email",
+        required: true,
+        pattern: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+        errorMsg: "Please enter a valid email address",
+      },
+      {
+        field: password,
+        label: "Password",
+        minLength: 3,
+        maxLength: 50,
+      },
+    ];
+
+    let isValid = true;
+
+    for (const validation of validations) {
+      const {
+        field,
+        label,
+        minLength,
+        maxLength,
+        pattern,
+        required,
+        errorMsg,
+      } = validation;
+
+      if (required && !field) {
+        isValid = false;
+        Swal.fire({
+          title: "Validation Error",
+          text: `Please enter ${label}`,
+          icon: "error",
+        });
+        return;
+      }
+
+      if (field && (field.length < minLength || field.length > maxLength)) {
+        isValid = false;
+        Swal.fire({
+          title: "Validation Error",
+          text: `${label} must be between ${minLength} and ${maxLength} characters`,
+          icon: "error",
+        });
+        return;
+      }
+
+      if (pattern && field && !pattern.test(field)) {
+        isValid = false;
+        Swal.fire({
+          title: "Validation Error",
+          text: errorMsg,
+          icon: "error",
+        });
+        return;
+      }
+    }
+
     Swal.fire({
       title: "Please wait...",
       allowOutsideClick: false,
@@ -31,37 +91,45 @@ function Login() {
       },
     });
 
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}/customer/login`, {
-        user_email: email,
-        user_password: password,
-      })
-      .then((result) => {
-        Swal.fire({
-          title: "Login Success",
-          text: "Login success, redirect to app...",
-          icon: "success",
-        }).then(() => {
-          console.log(result);
-          localStorage.setItem("auth", "true");
-          localStorage.setItem("userId", result?.data?.data[0].user_id);
-          localStorage.setItem("userName", result?.data?.data[0].user_name);
-          localStorage.setItem("userPhoto", result?.data?.data[0].user_photo);
-          localStorage.setItem("token", result?.data?.token);
-          dispatch(addAuth(result));
-          navigate("/");
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        Swal.fire({
-          title: "Login Failed",
-          text: error?.response?.data?.message ?? "Something wrong in our app",
-          icon: "error",
-        });
-      });
-  };
+    if (isValid) {
+      const loginUrl =
+        userType === "customer"
+          ? `${process.env.REACT_APP_BASE_URL}/customer/login`
+          : `${process.env.REACT_APP_BASE_URL}/seller/login`;
 
+      axios
+        .post(loginUrl, {
+          user_email: email,
+          user_password: password,
+        })
+        .then((result) => {
+          Swal.fire({
+            title: "Login Success",
+            text: "Login success, redirect to app...",
+            icon: "success",
+          }).then(() => {
+            console.log(result);
+            localStorage.setItem("auth", "true");
+            localStorage.setItem("userId", result?.data?.data[0].user_id);
+            localStorage.setItem("userName", result?.data?.data[0].user_name);
+            localStorage.setItem("userPhoto", result?.data?.data[0].user_photo);
+            localStorage.setItem("token", result?.data?.token);
+            localStorage.setItem("roles_id", result?.data?.data[0].roles_id);
+            dispatch(addAuth(result.data));
+            navigate("/");
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          Swal.fire({
+            title: "Login Failed",
+            text:
+              error?.response?.data?.message ?? "Something wrong in our app",
+            icon: "error",
+          });
+        });
+    }
+  };
 
   return (
     <>
@@ -87,13 +155,14 @@ function Login() {
                 className="btn-check"
                 name="btnradio"
                 id="custommer"
-                autocomplete="off"
-                checked
+                autoComplete="off"
+                checked={userType === "customer"}
+                onChange={() => setUserType("customer")}
               />
               <label
                 style={{ height: "50px", width: "150px" }}
                 className="btn btn-outline-danger btn-lg"
-                for="custommer"
+                htmlFor="custommer"
               >
                 Custommer
               </label>
@@ -101,15 +170,16 @@ function Login() {
               <input
                 type="radio"
                 className="btn-check"
-
                 name="btnradio"
                 id="seller"
-                autocomplete="off"
+                autoComplete="off"
+                checked={userType === "seller"}
+                onChange={() => setUserType("seller")}
               />
               <label
                 style={{ height: "50px", width: "150px" }}
                 className="btn btn-outline-danger btn-lg"
-                for="seller"
+                htmlFor="seller"
               >
                 Seller
               </label>
@@ -117,9 +187,13 @@ function Login() {
             <form
               onSubmit={(event) => {
                 event.preventDefault();
-              }}>
+              }}
+            >
               <div>
-                <label for="exampleInputEmail1" className="form-label"></label>
+                <label
+                  htmlFor="exampleInputEmail1"
+                  className="form-label"
+                ></label>
                 <input
                   type="email"
                   className="form-control form-control-lg"
@@ -131,7 +205,7 @@ function Login() {
               </div>
               <div className="mb-3">
                 <label
-                  for="exampleInputPassword1"
+                  htmlFor="exampleInputPassword1"
                   className="form-label"
                 ></label>
                 <input

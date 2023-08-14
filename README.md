@@ -2,7 +2,7 @@
 
 ## Project Description 🚀
 
-"Blanja" is a project portfolio that I have collaborated on as part of a project team. This platform is an e-commerce website that specifically focuses on fashion products. With a user-friendly interface and a wide range of fashion items, "Blanja" provides users with a convenient and engaging online shopping experience.
+Blanja is a project portfolio that I have collaborated on as part of a project team. This platform is an e-commerce website that specifically focuses on fashion products. With a user-friendly interface and a wide range of fashion items, Blanja provides users with a convenient and engaging online shopping experience.
 
 ## Technologies Used 💻🛠️
 
@@ -20,11 +20,6 @@ The Blanja project is built using the following technologies:
 - Skeleton (Responsive CSS framework)
 - Node.Js (JavaScript runtime)
 - Axios (HTTP client)
-
-## Project Repository 📂🔗
-
-The backend repository for this project can be found on GitHub at the following link:
-[Blanja Backend Repository](https://github.com/IrhamNfrnda/blanja-be)
 
 ## Features ✨🛍️👕👖
 
@@ -73,6 +68,7 @@ The backend repository for this project can be found on GitHub at the following 
     <td><img width="350px" src="./screenshot/Order.jpeg" border="0" alt="Order" /></td>
     <td> <img width="350px" src="./screenshot/Address.jpeg" border="0"  alt="Address" /></td>
   </tr>
+
 </table>
 
 ## Getting Started 🏁🚀
@@ -92,12 +88,11 @@ As part of a project team, contributions to "Blanja" were made collectively. For
 
 ## License 📜📝
 
-As the specific licensing information for "Blanja" may vary based on the project team's decisions, please refer to the LICENSE file in the project repository for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact 📞📧
+## Related Project
 
-If you have any questions or inquiries regarding this project, feel free to contact me at [irhamnfrnda@gmail.com](mailto:irhamnfrnda@gmail.com).
-
----
+[Demo Website](https://blanja-web.vercel.app) <br/>
+[Backend Blanja](https://github.com/nluthfis/blanja-be)
 
 Thank you for exploring my Blanja portfolio. "Blanja" has been an exciting project to work on, and we hope that it showcases our skills and passion for creating an engaging e-commerce platform. Happy shopping! 🛍️👠👗
